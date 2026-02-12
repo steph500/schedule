@@ -15,16 +15,13 @@ export default function Sidebar({ appointments, onEdit, onDelete }: SidebarProps
   today.setHours(0, 0, 0, 0);
 
   const upcomingAppointments = appointments
-    // Removed this line since i want to show
-    // past appointments but make them read only instead of hiding them, hid them in
-    // calender grid but not here since this is the list of appointments and we want
-    //  to show past ones as well
-    // .filter((apt) => apt.startTime >= today)
+    // Filter for appointments that are today or in the future
+    .filter((apt) => apt.startTime >= today)
     .sort((a, b) => a.startTime.getTime() - b.startTime.getTime())
     .slice(0, 5);
 
     console.log("Sidebar upcoming appointments: ", upcomingAppointments);
-    
+
   return (
     <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
       <div className="flex items-center gap-2 px-6 py-4 border-b">
