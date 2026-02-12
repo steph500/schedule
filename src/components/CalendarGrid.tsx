@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { Appointment } from '../types/appointments';
 import { BUSINESS_HOURS_START, BUSINESS_HOURS_END } from '../utils/constants';
-import { formatDateForDisplay, formatTimeForDisplay, isSameDay, addDays, getWeekDates } from '../utils/dateHelpers';
+import { formatDateForDisplay, isSameDay, addDays, getWeekDates } from '../utils/dateHelpers';
 import AppointmentSlot from './AppointmentSlot';
 import BookingModal from './BookingModal';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -31,6 +31,8 @@ export default function CalendarGrid({ appointments }: CalendarGridProps) {
     const slotEnd = new Date(slotStart);
     slotEnd.setHours(hour + 1, 0, 0, 0);
 
+    // console.log("appointments for slot: ", appointmen);
+
     return appointments.filter((apt) => {
       return (
         isSameDay(apt.startTime, date) &&
@@ -38,6 +40,7 @@ export default function CalendarGrid({ appointments }: CalendarGridProps) {
       );
     });
   };
+
 
   const hours = Array.from(
     { length: BUSINESS_HOURS_END - BUSINESS_HOURS_START },
@@ -89,9 +92,8 @@ export default function CalendarGrid({ appointments }: CalendarGridProps) {
 
                 {hours.map((hour) => {
                   const slotAppointments = getAppointmentsForSlot(date, hour);
-
-                  // Disable past time slots to prevent booking in the past but could be on their own
-                  // function to make code more tidy
+                  // // Disable past time slots to prevent booking in the past but could be on their own
+                  // // function to make code more tidy
                   if (
                     isInThePast(
                       new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, 0, 0, 0),  )) {

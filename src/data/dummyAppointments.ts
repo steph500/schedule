@@ -3,6 +3,8 @@ import { addHours, addDays } from '../utils/dateHelpers';
 
 const now = new Date();
 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+const yesterday = addDays(today, -4);
+
 
 export const DUMMY_APPOINTMENTS: Appointment[] = [
   {
@@ -19,7 +21,7 @@ export const DUMMY_APPOINTMENTS: Appointment[] = [
     startTime: addHours(addDays(today, 1), 14),
     endTime: addHours(addDays(today, 1), 15),
     description: 'Q1 Planning session',
-  },
+  }, 
   {
     id: '3',
     title: '1:1 with Manager',
@@ -42,5 +44,13 @@ export const DUMMY_APPOINTMENTS: Appointment[] = [
     endTime: addHours(addDays(today, 4), 13),
     description: 'Personal time',
     recurring: { frequency: 'daily', endDate: addDays(today, 30) },
+  },
+  {
+    id: '6',
+    title: 'Stefan Testing Past Appointment',
+    startTime: addHours(addDays(yesterday, 2), 10),
+    endTime: addHours(addDays(yesterday, 2), 10.75),
+    description: 'Performance review',
+    recurring: { frequency: 'weekly', endDate: addDays(today, 60) },
   },
 ];

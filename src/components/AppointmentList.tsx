@@ -1,4 +1,3 @@
-import React from 'react';
 import { Appointment } from '../types/appointments';
 import { formatDateForDisplay, formatTimeForDisplay } from '../utils/dateHelpers';
 import { Trash2, Edit2 } from 'lucide-react';
