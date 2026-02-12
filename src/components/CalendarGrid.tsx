@@ -5,6 +5,7 @@ import { formatDateForDisplay, formatTimeForDisplay, isSameDay, addDays, getWeek
 import AppointmentSlot from './AppointmentSlot';
 import BookingModal from './BookingModal';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { isInThePast } from "../utils/dateHelpers";
 
 interface CalendarGridProps {
   appointments: Appointment[];
@@ -88,6 +89,26 @@ export default function CalendarGrid({ appointments }: CalendarGridProps) {
 
                 {hours.map((hour) => {
                   const slotAppointments = getAppointmentsForSlot(date, hour);
+
+                  // Disable past time slots to prevent booking in the past but could be on their own
+                  // function to make code more tidy
+                  if (
+                    isInThePast(
+                      new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, 0, 0, 0),  )) {
+                    return (
+                      <div
+                        key={`${date.toISOString()}-${hour}`}
+                        className="h-24 border-b bg-gray-100 cursor-not-allowed"
+                      >
+                        <div className="h-full flex flex-col gap-1 p-1 overflow-y-auto">
+                          {slotAppointments.map((apt) => (
+                            <AppointmentSlot key={apt.id} appointment={apt} />
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  }
+
                   return (
                     <div
                       key={`${date.toISOString()}-${hour}`}
