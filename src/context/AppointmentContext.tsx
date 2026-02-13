@@ -57,7 +57,10 @@ export function AppointmentProvider({ children }: { children: React.ReactNode })
   }, []);
 
   const deleteAppointment = useCallback((id: string) => {
+    console.log("Deleting appointment with id stefaaan: ", id);
+    console.log("before deletion, appointments: ", appointments);
     setAppointments((prev) => prev.filter((apt) => apt.id !== id));
+    console.log("after deletion, appointments: ", appointments);
   }, []);
 
   return (

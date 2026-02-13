@@ -8,6 +8,7 @@ interface BookingModalProps {
   selectedDate: Date;
   selectedHour: number;
   existingAppointments: Appointment[];
+  appointmentToEdit: Appointment | null;
   onClose: () => void;
 }
 
@@ -30,29 +31,11 @@ export default function BookingModal({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (formData.startTime >= formData.endTime) {
-      alert("Start time must be before end time. Please adjust the times.");
-      return;
-    }
-
-    const durationMs =
-      formData.endTime.getTime() - formData.startTime.getTime();
-    const durationHours = durationMs / (1000 * 60 * 60);
-
-    if (durationHours > 2) {
-      const confirmed = window.confirm(
-        `This appointment is ${durationHours.toFixed(1)} hours long.\n\nDo you want to continue?`,
-      );
-      if (!confirmed) {
-        return;
-      }
-    }
-
     const validationErrors = validateAppointmentBooking(
       formData.title,
       formData.startTime,
       formData.endTime,
-      existingAppointments,
+      existingAppointments
     );
 
     if (validationErrors.length > 0) {
@@ -67,7 +50,7 @@ export default function BookingModal({
       endTime: formData.endTime,
       description: formData.description,
       recurring:
-        formData.recurringFrequency !== "none"
+        formData.recurringFrequency !== 'none'
           ? {
               frequency: formData.recurringFrequency,
               endDate: formData.recurringEndDate,
@@ -78,7 +61,7 @@ export default function BookingModal({
     addAppointment(newAppointment);
     setErrors([]);
     onClose();
-  };;
+  };
 
   const handleTimeChange = (field: 'start' | 'end', value: string) => {
     const [hours, minutes] = value.split(':').map(Number);

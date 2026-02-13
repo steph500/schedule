@@ -52,6 +52,7 @@ export default function AppointmentList({ appointments, onEdit, onDelete }: Appo
               <button
                 onClick={() => {
                   if (confirm('Delete this appointment?')) {
+                    console.log("Deleting appointment with id stefan now", apt.id);
                     onDelete(apt.id);
                   }
                 }}

@@ -10,9 +10,10 @@ import { isInThePast } from "../utils/dateHelpers";
 interface CalendarGridProps {
   appointments: Appointment[];
   onWeekChange?: (date: Date) => void;
+  onDelete?: (id: string) => void;
 }
 
-export default function CalendarGrid({ appointments }: CalendarGridProps) {
+export default function CalendarGrid({ appointments, onDelete }: CalendarGridProps) {
   const [currentWeek, setCurrentWeek] = useState<Date>(new Date());
   const [selectedSlot, setSelectedSlot] = useState<{ date: Date; hour: number } | null>(null);
   const weekDates = getWeekDates(currentWeek);
@@ -92,16 +93,16 @@ export default function CalendarGrid({ appointments }: CalendarGridProps) {
 
                 {hours.map((hour) => {
                   const slotAppointments = getAppointmentsForSlot(date, hour);
+
                   // // Disable past time slots to prevent booking in the past but could be on their own
                   // // function to make code more tidy
-                  if (
-                    isInThePast(
-                      new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, 0, 0, 0),  )) {
+
+                  if (isInThePast(new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, 0, 0, 0),  )) {
+
                     return (
                       <div
                         key={`${date.toISOString()}-${hour}`}
-                        className="h-24 border-b bg-gray-100 cursor-not-allowed"
-                      >
+                        className="h-24 border-b bg-gray-100 cursor-not-allowed">
                         <div className="h-full flex flex-col gap-1 p-1 overflow-y-auto">
                           {slotAppointments.map((apt) => (
                             <AppointmentSlot key={apt.id} appointment={apt} />
@@ -115,8 +116,8 @@ export default function CalendarGrid({ appointments }: CalendarGridProps) {
                     <div
                       key={`${date.toISOString()}-${hour}`}
                       className="h-24 border-b cursor-pointer hover:bg-blue-50 transition-colors"
-                      onClick={() => setSelectedSlot({ date, hour })}
-                    >
+                      onClick={() => setSelectedSlot({ date, hour })}>
+                        
                       <div className="h-full flex flex-col gap-1 p-1 overflow-y-auto">
                         {slotAppointments.map((apt) => (
                           <AppointmentSlot key={apt.id} appointment={apt} />
@@ -136,6 +137,7 @@ export default function CalendarGrid({ appointments }: CalendarGridProps) {
           selectedDate={selectedSlot.date}
           selectedHour={selectedSlot.hour}
           existingAppointments={appointments}
+          appointmentToEdit={null}
           onClose={() => setSelectedSlot(null)}
         />
       )}
